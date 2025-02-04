@@ -1,0 +1,39 @@
+<div class="details-container">
+    <h2>Employee Details</h2>
+    <div class="details-content" *ngIf="employee">
+      <div class="detail-row">
+        <span class="label">Employee ID:</span>
+        <span class="value">{{employee.employeeId}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Name:</span>
+        <span class="value">{{employee.firstName}} {{employee.lastName}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Email:</span>
+        <span class="value">{{employee.email}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Position:</span>
+        <span class="value">{{employee.position}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Department:</span>
+        <span class="value">{{employee.department}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Salary:</span>
+        <span class="value">&#8377; {{employee.salary}}</span>
+      </div>
+      <div class="detail-row">
+        <span class="label">Date of Joining: </span>
+        <!-- <span class="value">{{employee.dateOfJoining | date:'mediumDate'}}</span> -->
+         <span class="value">{{employee.dateOfJoining | date:'yyyy-MM-dd'}}</span>
+      </div>
+      
+      <div class="actions">
+        <button class="edit-btn" [routerLink]="['/employees/edit', employee.employeeId]">Edit</button>
+        <button class="back-btn" (click)="goBack()">Back to List</button>
+      </div>
+    </div>
+  </div>

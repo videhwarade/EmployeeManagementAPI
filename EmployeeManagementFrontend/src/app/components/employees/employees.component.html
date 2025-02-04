@@ -1,0 +1,99 @@
+<div class="employees-container">
+    <div class="header">
+      <h2>Employee List</h2>
+      <div class="header-actions">
+        <div class="search-box">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            (input)="onSearch()"
+            placeholder="Search employees..."
+            class="search-input"
+          >
+        </div>
+        <button class="add-btn" [routerLink]="['/employees/add']">
+          <i class="fas fa-plus"></i> Add Employee
+        </button>
+      </div>
+    </div>
+    
+    <div class="filters">
+      <select [(ngModel)]="departmentFilter" (change)="applyFilters()">
+        <option value="">All Departments</option>
+        <option *ngFor="let dept of departments" [value]="dept">{{dept}}</option>
+      </select>
+      
+      <select [(ngModel)]="sortBy" (change)="applyFilters()">
+        <option value="name">Sort by Name</option>
+        <option value="id">Sort by ID</option>
+        <option value="department">Sort by Department</option>
+        <!-- <option value="salary">Sort by Salary</option> -->
+        <option value="dateOfJoining">Sort by Date of Joining</option>
+      </select>
+    </div>
+
+    <div class="table-responsive">
+      <table class="employee-table">
+        <thead>
+          <tr>
+            <th>Sr.No</th>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <!-- <th>Salary</th> -->
+            <th>Date of Joining</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of filteredEmployees; let i = index">
+            <td>{{i + 1}}</td>
+            <!-- <td>EMP{{employee?.id?.toString().padStart(4, '0')}}</td> -->
+            <td>EMP{{ ('0000' + (employee?.employeeId || 0)).slice(-4) }}</td>
+            <td>{{employee.firstName}} {{employee.lastName}}</td>
+            <td>
+              <!-- <span class="department-badge" [attr.data-department]="employee.department"> -->
+                {{employee.department}}
+              <!-- </span> -->
+            </td>
+            <!-- <td>&#8377; {{employee.salary | number:'1.2-2'}}</td> -->
+            <td>{{employee.dateOfJoining | date:'mediumDate'}}</td>
+            <td class="actions">
+              <button class="view-btn" [routerLink]="['/employees', employee.employeeId]" title="View Details">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="edit-btn" [routerLink]="['/employees/edit', employee.employeeId]" title="Edit">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="delete-btn" (click)="deleteEmployee(employee.employeeId)" title="Delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredEmployees.length === 0">
+            <td colspan="7" class="no-data">
+              No employees found matching your criteria
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button 
+        [disabled]="currentPage === 1" 
+        (click)="changePage(currentPage - 1)"
+        class="page-btn"
+      >
+        Previous
+      </button>
+      <span class="page-info">Page {{currentPage}} of {{totalPages}}</span>
+      <button 
+        [disabled]="currentPage === totalPages" 
+        (click)="changePage(currentPage + 1)"
+        class="page-btn"
+      >
+        Next
+      </button>
+    </div>
+</div>
